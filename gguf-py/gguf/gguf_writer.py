@@ -217,9 +217,13 @@ class GGUFWriter:
         self.state = WriterState.TI_DATA
 
     def add_key_value(self, key: str, val: Any, vtype: GGUFValueType) -> None:
-        # if any(key in kv_data for kv_data in self.kv_data):
-        #     raise ValueError(f'Duplicated key name {key!r}')
-
+        if any(key in kv_data for kv_data in self.kv_data):
+            # raise ValueError(f'Duplicated key name {key!r}')
+            logger.warning(f'Duplicated key name {key!r}')
+            # deleting duplicate kv from non first shard
+            for kv_data in self.kv_data[1:]:
+                if key in kv_data:
+                    del kv_data[key]
         self.kv_data[0][key] = GGUFValue(value=val, type=vtype)
 
     def add_uint8(self, key: str, val: int) -> None:
