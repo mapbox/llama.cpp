@@ -1,3 +1,12 @@
+
+
+# this repo if full copy of https://github.com/ggerganov/llama.cpp
+
+
+this repo was forked because of issue if doube key for gemma 2 model (see last commit for detailes)
+
+
+
 # llama.cpp
 
 ![llama](https://user-images.githubusercontent.com/1991296/230134379-7181e485-c521-4d23-a0d6-f7b3b61ba524.png)
