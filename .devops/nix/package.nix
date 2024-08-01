@@ -18,6 +18,7 @@
   vulkan-headers,
   vulkan-loader,
   curl,
+  shaderc,
   useBlas ? builtins.all (x: !x) [
     useCuda
     useMetalKit
@@ -89,6 +90,22 @@ let
       ps.tiktoken
       ps.torchWithoutCuda
       ps.transformers
+
+      # server bench
+      ps.matplotlib
+
+      # server tests
+      ps.openai
+      ps.behave
+      ps.prometheus-client
+
+      # for examples/pydantic-models-to-grammar-examples.py
+      ps.docstring-parser
+      ps.pydantic
+
+      # for scripts/compare-llama-bench.py
+      ps.gitpython
+      ps.tabulate
     ]
   );
 
@@ -109,16 +126,9 @@ let
     ++ optionals useMetalKit [ MetalKit ];
 
   cudaBuildInputs = with cudaPackages; [
-    cuda_cccl.dev # <nv/target>
-
-    # A temporary hack for reducing the closure size, remove once cudaPackages
-    # have stopped using lndir: https://github.com/NixOS/nixpkgs/issues/271792
-    cuda_cudart.dev
-    cuda_cudart.lib
-    cuda_cudart.static
-    libcublas.dev
-    libcublas.lib
-    libcublas.static
+    cuda_cudart
+    cuda_cccl # <nv/target>
+    libcublas
   ];
 
   rocmBuildInputs = with rocmPackages; [
@@ -130,6 +140,7 @@ let
   vulkanBuildInputs = [
     vulkan-headers
     vulkan-loader
+    shaderc
   ];
 in
 
